@@ -34,8 +34,6 @@ def submit_login(request):
     return redirect('/')
 
 
-
-
 @login_required(login_url='/login/')
 def lista_eventos(request):
     usuario = request.user
@@ -47,4 +45,31 @@ def lista_eventos(request):
     dados = {'eventos': evento}
 
     return render(request, 'agenda.html', dados)
+
+
+@login_required(login_url='/login/')
+def evento(request):
+    return render(request, 'evento.html')
+
+
+@login_required(login_url='/login/')
+def submit_evento(request):
+    if request.POST:
+
+        # pega as informacoes
+        titulo = request.POST.get('titulo')
+        data_evento = request.POST.get('data_evento')
+        descricao = request.POST.get('descricao')
+        usuario = request.user
+
+        # para registrar eles, o Evento ja esta sendo importado
+        Evento.objects.create(titulo=titulo,
+                              data_evento=data_evento,
+                              descricao=descricao,
+                              usuario=usuario)
+
+    return redirect('/')
+
+
+
 
